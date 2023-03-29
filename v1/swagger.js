@@ -24,5 +24,3 @@ export const swaggerDocs = (app, port) => {
     )
   );
 };
-
-// export default swaggerDocs;

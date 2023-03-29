@@ -17,10 +17,13 @@ export async function Register(req, res) {
 
     const unixTime = Math.floor(new Date().getTime() / 1000);
 
+    const firstUser = await User.find();
+
     const newUser = new User({
       name,
       username,
       email,
+      role: firstUser.length === 0 ? "admin" : "user",
       password: bcrypt.hashSync(password, 10),
       createdAt: unixTime,
     });
@@ -31,13 +34,14 @@ export async function Register(req, res) {
     res.status(201).json({
       status: 201,
       token,
-      user: "Has been successfully registered",
+      user: newUser,
+      msg: "Successful registration",
     });
   } catch (error) {
     console.log(error);
-    res.status(200).json({
-      status: 200,
-      data: error,
+    res.status(404).json({
+      status: 404,
+      msg: error,
     });
   }
 }
@@ -53,8 +57,6 @@ export async function Login(req, res) {
     if (!bcrypt.compareSync(password, user.password))
       throw "Incorrect credentials";
 
-    // console.log(res);
-
     const token = await user.getSignedJwtToken();
 
     // delete user.role;
@@ -68,7 +70,7 @@ export async function Login(req, res) {
     //cambiar status de respuesta
     res.status(404).json({
       status: 404,
-      data: error,
+      msg: error,
     });
   }
 }
@@ -100,6 +102,7 @@ export async function CheckStatus(req, res) {
         user,
         token: newToken,
       },
+      msgL: "Successful verification",
     });
   } catch (err) {
     res.status(401).json({ msg: "Token is not valid" });
@@ -113,11 +116,12 @@ export async function GetUsers(req, res) {
     res.status(200).json({
       status: 200,
       data: users,
+      msg: "Successfully",
     });
   } catch (error) {
     res.status(404).json({
       status: 404,
-      error,
+      msg: error,
     });
   }
 }

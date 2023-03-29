@@ -1,10 +1,6 @@
 import mongoose from "mongoose";
 
 const productSchema = new mongoose.Schema({
-  // userId: {
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   ref: "User",
-  // },
   title: {
     type: String,
     required: true,
@@ -26,7 +22,7 @@ const productSchema = new mongoose.Schema({
   category: {
     type: String,
     required: true,
-    enum: ["tech", "home"], //agregar mas categorias
+    enum: ["Electronics", "Home", "Fashion", "Sports"],
   },
 
   color: {

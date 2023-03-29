@@ -8,34 +8,8 @@ import {
 import { Register, GetUsers, Login, CheckStatus } from "../../modules/User.js";
 import fileUpload from "express-fileupload";
 import protect from "../../middleware/auth.js";
-// import multer from "multer";
-// const storage = multer.memoryStorage();
-// const upload = multer({ storage: storage });
 
 const router = express.Router();
-
-// /**
-//  * @openapi
-//  * /api/v1/login:
-//  *   get:
-//  *     tags:
-//  *       - login
-//  *     responses:
-//  *       200:
-//  *         description: OK
-//  *         content:
-//  *           application/json:
-//  *             schema:
-//  *               type: object
-//  *               properties:
-//  *                 status:
-//  *                   type: string
-//  *                   example: OK
-//  *                 data:
-//  *                   type: array
-//  *                   items:
-//  *                     type: object
-//  */
 
 /**
  * @swagger
@@ -75,7 +49,7 @@ const router = express.Router();
  *              properties:
  *                message:
  *                  type: string
- *                  example: Objeto creado con éxito.
+ *                  example: Login correctamente.
  */
 router.route("/login").post(Login);
 
@@ -83,7 +57,7 @@ router.route("/login").post(Login);
  * @swagger
  * /api/v1/register:
  *   post:
- *     summary: Login
+ *     summary: Register
  *     tags: [Auth]
  *     requestBody:
  *       required: true
@@ -111,7 +85,7 @@ router.route("/login").post(Login);
  *
  *     responses:
  *      200:
- *        description: login correctamente.
+ *        description: Registro exitoso.
  *        content:
  *          application/json:
  *            schema:
@@ -119,7 +93,7 @@ router.route("/login").post(Login);
  *              properties:
  *                message:
  *                  type: string
- *                  example: Objeto creado con éxito.
+ *                  example: Usuario creado con éxito.
  */
 router.route("/register").post(Register);
 // router.route("/getUsers").get(protect, GetUsers);
@@ -130,7 +104,7 @@ router.route("/check-status").get(CheckStatus);
  * @openapi
  * /api/v1/product/create:
  *    post:
- *      summary: ima
+ *      summary: Crea un producto
  *      tags: [Products]
  *      requestBody:
  *        required: true
@@ -146,7 +120,7 @@ router.route("/check-status").get(CheckStatus);
  *                    type: string
  *                  category:
  *                    type: string
- *                    enum: [tech, vehicle]
+ *                    enum: [Electronics, Home, Fashion, Sports]
  *                  images:
  *                    required: true
  *                    type: array
@@ -155,8 +129,6 @@ router.route("/check-status").get(CheckStatus);
  *                      format: binary
  *                  price:
  *                    type: number
- *                  color:
- *                    type: string
  *              required:
  *                -title
  *                -description
@@ -189,8 +161,25 @@ router.route("/check-status").get(CheckStatus);
 router
   .route("/product/create")
   .post(protect, fileUpload({ useTempFiles: true }), CreateProduct);
-//falta agregar la respuesta de autorizacion
 
+/**
+ * @swagger
+ * /api/v1/getProducts:
+ *   get:
+ *     summary: Obtiene todos los productos
+ *     tags: [Products]
+ *     responses:
+ *      200:
+ *        description: Productos.
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                message:
+ *                  type: string
+ *                  example: Productos.
+ */
 router.route("/getProducts").get(protect, GetProducts);
 router.route("/product/:id").get(protect, GetOneProduct);
 // router.route("/deleteProduct/:id").delete(protect, DeleteProduct);

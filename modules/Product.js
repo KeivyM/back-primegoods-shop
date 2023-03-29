@@ -2,12 +2,10 @@ import Product from "../models/Product.js";
 import uploadImage from "../utils/uploadImg.js";
 
 export async function CreateProduct(req, res) {
-  // console.log(req.files);
-  console.log(req);
   try {
     const { title, price, category, description } = req.body;
-    //validar extension de las imagenes
-    if (!req.files) throw "no hay imagen";
+
+    if (!req.files) throw "Image is required";
     if (!title || (!price && price < 0) || !category || !description) {
       throw "Please fill all the fields";
     }
@@ -30,13 +28,13 @@ export async function CreateProduct(req, res) {
     res.status(201).json({
       status: 201,
       data: product,
-      message: "Product created successfully",
+      msg: "Product created successfully",
     });
   } catch (error) {
     console.log("error", error);
     res.status(404).json({
       status: 404,
-      error,
+      msg: error,
     });
   }
 }
@@ -44,7 +42,6 @@ export async function CreateProduct(req, res) {
 export async function GetProducts(req, res) {
   try {
     const products = await Product.find();
-    console.log(products);
     res.status(200).json({
       status: 200,
       data: products,
@@ -52,7 +49,7 @@ export async function GetProducts(req, res) {
   } catch (error) {
     res.status(404).json({
       status: 404,
-      error: error,
+      msg: error,
     });
   }
 }
@@ -65,11 +62,12 @@ export async function GetOneProduct(req, res) {
     res.status(200).json({
       status: 200,
       data: product,
+      msg: "Successfully",
     });
   } catch (error) {
     res.status(404).json({
       status: 404,
-      error,
+      msg: error,
     });
   }
 }
@@ -82,12 +80,12 @@ export async function DeleteProduct(req, res) {
 
     res.status(200).json({
       status: 200,
-      data: "eliminando",
+      msg: "deleting",
     });
   } catch (error) {
     res.status(404).json({
       status: 404,
-      error,
+      msg: error,
     });
   }
 }
